@@ -1,12 +1,13 @@
-export const createUserService = async (payload) => {
-    const existingEmail = await User.findOne({ where: { email: payload.email } });
+import Product from "../models/product.model";
 
-    if(existingEmail != null) {
-        throw new AppError('Email is already in use.', 405);
+export const createProductService = async (payload) => {
+    const existingProduct = await User.findOne({ where: { name: payload.name } });
+
+    if(existingProduct != null) {
+        throw new AppError('Product name already registered.', 405);
     }
 
-    payload.password = await hashPasswordService(payload.password);
-    await User.create(payload);
+    const product = await Product.create(payload);
 
-    return "User created successfully";
+    return { ...product };
 }
