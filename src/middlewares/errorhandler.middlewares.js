@@ -1,8 +1,10 @@
-import { AppError } from "../error";
+import { AppError } from "../error.js";
 import { ZodError } from "zod";
-import { JsonWebTokenError } from "jsonwebtoken";
+import pkg from 'jsonwebtoken';
 
 export const handleError = (err, req, res, next) => {
+    const { JsonWebTokenError } = pkg;
+    
     if(err instanceof AppError) {
         res.status(err.statusCode).json({ message: err.message });
     }

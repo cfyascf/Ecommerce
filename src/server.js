@@ -1,5 +1,5 @@
-import connectDb from './startup/db';
-import app from "./app";
+import { connectDb } from "./startup/db.js";
+import app from "./app.js";
 
 const startServer = () => {
     try {

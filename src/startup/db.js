@@ -1,12 +1,15 @@
 import 'dotenv/config'
 import { Sequelize } from 'sequelize';
 
-const connectDb = async () => {
-    const sequelize = new Sequelize({
+const sequelize = new Sequelize(
+    process.env.DATABASE, process.env.DB_USER, process.env.DB_PASSWORD,
+    {
         host: process.env.DB_HOST,
-        dialect: 'sqlite'
-    });
+        dialect: 'mssql'
+    }
+);
 
+const connectDb = async () => {
     try {
         await sequelize.sync();
         console.log("Database connection running successfully!");
@@ -15,4 +18,4 @@ const connectDb = async () => {
     }
 }
 
-export default connectDb
+export { sequelize, connectDb };
