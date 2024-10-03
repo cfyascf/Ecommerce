@@ -1,6 +1,8 @@
 import pkg from 'jsonwebtoken';
 import { AppError } from "../error.js";
 
+const { verify } = pkg;
+
 export const validateBody = (schema) => (req, res, next) => {
     const validated = schema.parse(req.body);
     req.body = validated;
@@ -9,8 +11,6 @@ export const validateBody = (schema) => (req, res, next) => {
 }
 
 export const validateToken = (req, res, next) => {
-    const { verify } = pkg;
-    
     const jwt = req.headers.authorization;
     if(!jwt) {
         throw new AppError("JWT token is missing.", 401);
