@@ -13,8 +13,8 @@ export const createProductService = async (payload) => {
     return { ...product };
 }
 
-export const updateProductService = async (payload) => {
-    const product = await Product.findByPk(payload.id);
+export const updateProductService = async (payload, productid) => {
+    const product = await Product.findByPk(productid);
     if(!product) {
         throw new AppError("Product not found.", 404);
     }

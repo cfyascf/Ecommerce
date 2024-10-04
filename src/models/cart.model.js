@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../startup/db.js";
-import Product from "./product.model.js";
 
 const Cart = sequelize.define(
     'Cart',
