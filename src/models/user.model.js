@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../startup/db.js";
 
 const User = sequelize.define(
-    'User',
+    "User",
     {
         fullname: {
             type: DataTypes.STRING,

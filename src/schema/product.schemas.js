@@ -8,6 +8,7 @@ const createProductSchema = z.object({
 });
 
 const updateProductSchema = z.object({
+    id: z.number(),
     name: z.string().min(3).optional(),
     description: z.string().min(3).optional(),
     price: z.number().optional(),

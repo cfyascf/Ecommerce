@@ -1,3 +1,4 @@
+import "./models/index.model.js";
 import { connectDb } from "./startup/db.js";
 import app from "./app.js";
 

@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../startup/db.js";
+import Cart from "./cart.model.js";
 
 const Product = sequelize.define(
     'Product',
@@ -21,6 +22,6 @@ const Product = sequelize.define(
             allowNull: false
         }
     }
-)
+);
 
 export default Product;
