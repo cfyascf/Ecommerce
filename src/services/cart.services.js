@@ -17,6 +17,10 @@ export const addProductService = async (productid, userid) => {
         throw new AppError("Product not found.", 404);
     }
 
+    if(product.stock_qty <= 0) {
+        throw new AppError("Product is no longer in stock.", 400);
+    }
+
     const existingProduct = await CartProducts.findOne({ where: { ProductId: productid, CartId: cart.id } });
     if(existingProduct) {
         existingProduct.qty++;

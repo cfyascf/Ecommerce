@@ -56,8 +56,8 @@ export const pixPaymentService = async (userid) => {
 
     cartProducts.forEach(async cartProduct => {
         const product = await Product.findByPk(cartProduct.ProductId);
-        if(product.stock_qty == 0) {
-            throw new AppError("Product is not in stock.", 400);
+        if(product.stock_qty < cartProduct.qty) {
+            throw new AppError(`There's not enough in stock to supply this order. Stock quantity: ${product.stock_qty}`, 400);
         }
     });
 
@@ -70,7 +70,7 @@ export const pixPaymentService = async (userid) => {
 
     cartProducts.forEach(async cartProduct => {
         const product = await Product.findByPk(cartProduct.ProductId);
-        product.stock_qty--;
+        product.stock_qty -= cartProduct.qty;
         await product.save();
 
         await cartProduct.destroy();
