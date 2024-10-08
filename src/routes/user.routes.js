@@ -7,9 +7,6 @@ const userRoutes = Router();
 
 userRoutes
     .post("", validateBody(createUserSchema), createUserController)
-    .put("", validateBody(updateUserSchema), validateToken, updateUserController)
-    .get("/match", getUserByMatchController)
-    .get("", getUserByIdController)
-    .delete("", validateToken, deleteUserController);
+    .put("", validateToken, validateBody(updateUserSchema), updateUserController)
 
 export default userRoutes;

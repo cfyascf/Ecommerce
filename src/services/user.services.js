@@ -3,9 +3,9 @@ import { AppError } from "../error.js";
 import { hashPasswordService } from './password.services.js';
 
 export const createUserService = async (payload) => {
-    const existingEmail = await User.find({ email: payload.email });
+    const existingEmail = await User.findOne({ where: { email: payload.email } });
 
-    if(existingEmail.length != 0) {
+    if(existingEmail != null) {
         throw new AppError('Email is already in use.', 405);
     }
 
@@ -16,7 +16,7 @@ export const createUserService = async (payload) => {
 }
 
 export const updateUserService = async (payload, userid) => {
-    const user = await User.findById(userid);
+    const user = await User.findByPk(userid);
     if(!user) {
         throw new AppError("User not found.", 404);
     }
