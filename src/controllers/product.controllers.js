@@ -7,7 +7,7 @@ export const createProductController = async (req, res) => {
 }
 
 export const updateProductController = async (req, res) => {
-    const service = await updateProductService(req.body, req.param);
+    const service = await updateProductService(req.body, req.params.id);
 
     res.status(200).json({ data: service });
 }

@@ -7,7 +7,7 @@ const productRoutes = Router();
 
 productRoutes
     .post("", validateToken, validateBody(createProductSchema), createProductController)
-    .put("", validateToken, validateBody(updateProductSchema), updateProductController)
+    .put("/:id", validateToken, validateBody(updateProductSchema), updateProductController)
     .get("", validateToken, getAllProductsControler)
     .delete("", validateToken, deleteProductController);
 
