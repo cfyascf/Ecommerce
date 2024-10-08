@@ -51,6 +51,10 @@ export const removeProductService = async (productid, userid) => {
     }
 
     const existingProduct = await CartProducts.findOne({ where: { ProductId: productid, CartId: cart.id } });
+    if(!existingProduct) {
+        throw new AppError("Product not in cart.", 400);
+    }
+
     if(existingProduct.qty > 1) {
         existingProduct.qty--;
         await existingProduct.save();
