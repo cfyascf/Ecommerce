@@ -21,19 +21,32 @@ export const creditCardPaymentService = async (userid) => {
         throw new AppError("Cart is empty.", 400);
     }
 
+    await Promise.all(
+        cartProducts.map(async (cartProduct) => {
+            const product = await Product.findByPk(cartProduct.ProductId);
+            if(product.stock_qty < cartProduct.qty) {
+                throw new AppError(`There's not enough in stock to supply this order. Stock quantity: ${product.stock_qty}`, 400);
+            }
+        })
+    )
+
     const payment = await Payment.create({
         user_id: user.id,
         total_price: cart.total_price,
-        method: "creditcard",
+        method: "credit-card",
         status: "concluded"
+    });
+
+    cartProducts.forEach(async cartProduct => {
+        const product = await Product.findByPk(cartProduct.ProductId);
+        product.stock_qty -= cartProduct.qty;
+        await product.save();
+
+        await cartProduct.destroy();
     });
 
     cart.total_price = 0.0;
     await cart.save();
-
-    cartProducts.forEach(async product => {
-        await product.destroy();
-    });
 
     return { payment };
 }
@@ -54,12 +67,14 @@ export const pixPaymentService = async (userid) => {
         throw new AppError("Cart is empty.", 400);
     }
 
-    cartProducts.forEach(async cartProduct => {
-        const product = await Product.findByPk(cartProduct.ProductId);
-        if(product.stock_qty < cartProduct.qty) {
-            throw new AppError(`There's not enough in stock to supply this order. Stock quantity: ${product.stock_qty}`, 400);
-        }
-    });
+    await Promise.all(
+        cartProducts.map(async (cartProduct) => {
+            const product = await Product.findByPk(cartProduct.ProductId);
+            if(product.stock_qty < cartProduct.qty) {
+                throw new AppError(`There's not enough in stock to supply this order. Stock quantity: ${product.stock_qty}`, 400);
+            }
+        })
+    )
 
     const payment = await Payment.create({
         user_id: user.id,
