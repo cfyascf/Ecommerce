@@ -15,5 +15,5 @@ export const removeProductController = async (req, res) => {
 export const getCartController = async (req, res) => {
     const service = await getCartService(res.locals.userid);
 
-    res.status(200).json({ message: service });
+    res.status(200).json({ data: service });
 }

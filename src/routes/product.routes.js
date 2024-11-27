@@ -8,7 +8,7 @@ const productRoutes = Router();
 productRoutes
     .post("", validateToken, validateBody(createProductSchema), createProductController)
     .put("/:id", validateToken, validateBody(updateProductSchema), updateProductController)
-    .get("", validateToken, getAllProductsControler)
+    .get("", getAllProductsControler)
     .delete("", validateToken, deleteProductController);
 
 export default productRoutes;

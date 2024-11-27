@@ -8,10 +8,11 @@ const createProductSchema = z.object({
 });
 
 const updateProductSchema = z.object({
-    name: z.string().min(3).optional(),
-    description: z.string().min(3).optional(),
-    price: z.number().optional(),
-    stock_qty: z.number().optional()
+    name: z.union([z.string().min(3), z.string().length(0), z.null()]).optional(),
+    description: z.union([z.string().min(3), z.string().length(0), z.null()]).optional(),
+    price: z.union([z.number(), z.null()]).optional(),
+    stock_qty: z.union([z.number(), z.null()]).optional(),
 });
+
 
 export { createProductSchema, updateProductSchema };

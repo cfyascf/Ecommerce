@@ -3,6 +3,7 @@ import Cart from "../models/cart.model.js"
 import CartProducts from "../models/cartproducts.model.js";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
+import { Op } from "sequelize";
 
 export const addProductService = async (productid, userid) => {
     const [ cart ] = await Cart.findOrCreate({
@@ -57,9 +58,15 @@ export const removeProductService = async (productid, userid) => {
 
     if(existingProduct.qty > 1) {
         existingProduct.qty--;
+        cart.total_price -= product.price;
+
         await existingProduct.save();
+        await cart.save();
+        
     } else {
         await CartProducts.destroy({ where: { CartId: cart.id, ProductId: product.id } });
+        cart.total_price -= product.price;
+        await cart.save();
     }
 
     return "Product removed from cart successfully!";
@@ -77,6 +84,9 @@ export const getCartService = async (userid) => {
     }
 
     const cartProducts = await CartProducts.findAll({ where: { CartId: cart.id } });
+    const productsId = cartProducts.map(cp => cp.ProductId);
 
-    return { ...cart, ...cartProducts };
+    const products = await Product.findAll({ where: { id: { [Op.in]: productsId } } });
+
+    return { values: cart, products: products };
 }
